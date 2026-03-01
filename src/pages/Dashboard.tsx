@@ -44,11 +44,19 @@ const Dashboard = () => {
       {/* Top Nav */}
       <header className="sticky top-0 z-50 glass border-b border-border">
         <div className="container flex items-center justify-between h-16">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl teal-gradient flex items-center justify-center">
-              <Scissors className="w-5 h-5 text-primary-foreground" />
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl teal-gradient flex items-center justify-center">
+                <Scissors className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <span className="text-lg font-bold text-foreground">Super Salon</span>
             </div>
-            <span className="text-lg font-bold text-foreground">Super Salon</span>
+            {activeItem && (
+              <div className="border-l border-border pl-6">
+                <h1 className="text-sm font-bold text-foreground leading-tight">{activeItem.title}</h1>
+                <p className="text-xs text-muted-foreground">{activeItem.subtitle}</p>
+              </div>
+            )}
           </div>
           <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground">
