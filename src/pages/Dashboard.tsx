@@ -1,7 +1,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Scissors, Users, Store, Calendar, TrendingUp, LogOut, LayoutDashboard, UserCog, Calculator, Settings } from "lucide-react";
+import { Scissors, Users, Store, Calendar, TrendingUp, LogOut, LayoutDashboard, UserCog, Calculator, Settings, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, lazy, Suspense } from "react";
 
@@ -12,12 +12,14 @@ const Dashboard = () => {
   const [activeNav, setActiveNav] = useState("dashboard");
 
   const navItems = [
-    { id: "dashboard", label: "Management Dashboard", icon: LayoutDashboard },
-    { id: "branch", label: "Branch Management", icon: Store },
-    { id: "hr", label: "HR Management", icon: UserCog },
-    { id: "accounting", label: "Accounting", icon: Calculator },
-    { id: "settings", label: "Settings", icon: Settings },
+    { id: "dashboard", label: "Management Dashboard", icon: LayoutDashboard, title: "Dashboard", subtitle: `Welcome back, ${profile?.full_name || "there"}!` },
+    { id: "branch", label: "Branch Management", icon: Store, title: "Branch Management", subtitle: "Manage all your branches and settings" },
+    { id: "hr", label: "HR Management", icon: UserCog, title: "HR Management", subtitle: "Manage your staff and human resources" },
+    { id: "accounting", label: "Accounting", icon: Calculator, title: "Accounting", subtitle: "Financial overview and reports" },
+    { id: "settings", label: "Settings", icon: Settings, title: "Settings", subtitle: "Configure your salon preferences" },
   ];
+
+  const activeItem = navItems.find((item) => item.id === activeNav);
 
   if (loading) {
     return (
@@ -81,6 +83,20 @@ const Dashboard = () => {
             ))}
           </div>
         </div>
+        {/* Page Title Bar */}
+        <div className="border-t border-border">
+          <div className="container flex items-center justify-between py-3">
+            <div>
+              <h1 className="text-xl font-bold text-foreground">{activeItem?.title}</h1>
+              <p className="text-xs text-muted-foreground">{activeItem?.subtitle}</p>
+            </div>
+            {activeNav === "branch" && (
+              <Button className="teal-gradient text-primary-foreground transition-all duration-200 active:scale-95 shadow-teal-sm hover:shadow-teal-md gap-2 text-sm">
+                <Plus className="w-4 h-4" /> Add New Branch
+              </Button>
+            )}
+          </div>
+        </div>
       </header>
 
       <main className="container py-8">
@@ -94,8 +110,6 @@ const Dashboard = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <h1 className="text-3xl font-bold text-foreground mb-1">Dashboard</h1>
-            <p className="text-muted-foreground mb-8">Welcome back, {profile?.full_name || "there"}!</p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               {stats.map((stat, i) => (

@@ -91,21 +91,6 @@ const BranchManagement = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">
-              Branch Management
-            </h1>
-            <p className="text-muted-foreground text-sm mt-1">
-              Manage all your branches and settings
-            </p>
-          </div>
-          <Button className="teal-gradient text-primary-foreground transition-all duration-200 active:scale-95 shadow-teal-sm hover:shadow-teal-md gap-2">
-            <Plus className="w-4 h-4" /> Add New Branch
-          </Button>
-        </div>
-
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <div className="relative flex-1 max-w-sm">
