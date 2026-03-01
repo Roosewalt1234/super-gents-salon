@@ -131,23 +131,22 @@ const BranchManagement = () => {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.04, duration: 0.3 }}
-                className="glass rounded-2xl shadow-teal-sm hover:shadow-teal-md transition-shadow"
+                className="bg-card rounded-2xl shadow-sm border border-border hover:shadow-md transition-shadow"
               >
                 {/* Card Header */}
                 <div className="p-5 pb-3">
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mt-0.5 shrink-0">
+                      <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center mt-0.5 shrink-0">
                         <MapPin className="w-5 h-5 text-primary" />
                       </div>
                       <div className="min-w-0">
-                        <h3 className="font-bold text-foreground text-sm leading-tight truncate">
+                        <h3 className="font-bold text-foreground text-base leading-tight">
                           {branch.branch_name}
                         </h3>
                         <span
-                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider mt-1.5 ${
-                            (branch.status || "active").toLowerCase() ===
-                            "active"
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider mt-1.5 ${
+                            (branch.status || "active").toLowerCase() === "active"
                               ? "bg-primary/10 text-primary"
                               : "bg-destructive/10 text-destructive"
                           }`}
@@ -163,15 +162,13 @@ const BranchManagement = () => {
                 </div>
 
                 {/* Location & Phone */}
-                <div className="px-5 pb-3 space-y-1.5">
-                  <div className="flex items-center gap-2 text-muted-foreground text-xs">
-                    <MapPin className="w-3.5 h-3.5 shrink-0" />
-                    <span className="truncate">
-                      {branch.location || "—"}
-                    </span>
+                <div className="px-5 pb-4 space-y-2">
+                  <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                    <MapPin className="w-4 h-4 shrink-0" />
+                    <span className="truncate">{branch.location || "—"}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-muted-foreground text-xs">
-                    <Phone className="w-3.5 h-3.5 shrink-0" />
+                  <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                    <Phone className="w-4 h-4 shrink-0" />
                     <span>{branch.phone || "—"}</span>
                   </div>
                 </div>
@@ -180,28 +177,18 @@ const BranchManagement = () => {
                 <div className="border-t border-border mx-5" />
 
                 {/* Stats */}
-                <div className="px-5 py-3 flex items-center justify-between">
-                  <div className="text-center">
-                    <p className="text-lg font-bold text-primary">
-                      {branch.services_count ?? 0}
-                    </p>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
-                      Services
-                    </p>
+                <div className="px-5 py-4 flex items-center justify-between">
+                  <div className="text-center flex-1">
+                    <p className="text-xl font-bold text-primary">{branch.services_count ?? 0}</p>
+                    <p className="text-xs text-muted-foreground font-medium">Services</p>
                   </div>
-                  <div className="text-center">
-                    <p className="text-lg font-bold text-primary">
-                      {branch.barbers_count ?? 0}
-                    </p>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
-                      Barbers
-                    </p>
+                  <div className="text-center flex-1">
+                    <p className="text-xl font-bold text-primary">{branch.barbers_count ?? 0}</p>
+                    <p className="text-xs text-muted-foreground font-medium">Barbers</p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-lg font-bold text-foreground">AED 0</p>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
-                      Revenue
-                    </p>
+                  <div className="text-center flex-1">
+                    <p className="text-xl font-bold text-foreground">AED 0</p>
+                    <p className="text-xs text-muted-foreground font-medium">Revenue</p>
                   </div>
                 </div>
 
@@ -210,15 +197,15 @@ const BranchManagement = () => {
 
                 {/* Actions */}
                 <div className="p-4 space-y-2">
-                  <button className="w-full flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-2.5 text-xs font-medium text-foreground hover:border-primary/30 hover:shadow-teal-sm transition-all duration-200 active:scale-[0.98]">
-                    <Wrench className="w-3.5 h-3.5" /> Manage Services
+                  <button className="w-full flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-2.5 text-sm font-medium text-foreground hover:border-primary/30 hover:shadow-sm transition-all duration-200 active:scale-[0.98]">
+                    <Wrench className="w-4 h-4" /> Manage Services
                   </button>
                   <div className="grid grid-cols-2 gap-2">
-                    <button className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-2.5 text-xs font-medium text-foreground hover:border-primary/30 hover:shadow-teal-sm transition-all duration-200 active:scale-[0.98]">
-                      <Users className="w-3.5 h-3.5" /> Barbers
+                    <button className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-2.5 text-sm font-medium text-foreground hover:border-primary/30 hover:shadow-sm transition-all duration-200 active:scale-[0.98]">
+                      <Users className="w-4 h-4" /> Barbers
                     </button>
-                    <button className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-2.5 text-xs font-medium text-foreground hover:border-primary/30 hover:shadow-teal-sm transition-all duration-200 active:scale-[0.98]">
-                      <Settings className="w-3.5 h-3.5" /> Settings
+                    <button className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-2.5 text-sm font-medium text-foreground hover:border-primary/30 hover:shadow-sm transition-all duration-200 active:scale-[0.98]">
+                      <Settings className="w-4 h-4" /> Settings
                     </button>
                   </div>
                 </div>
