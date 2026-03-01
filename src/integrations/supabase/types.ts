@@ -674,6 +674,99 @@ export type Database = {
         }
         Relationships: []
       }
+      expenses_register: {
+        Row: {
+          amount: number | null
+          branch_id: string
+          category_id: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          employee_id: string | null
+          id: string
+          payment_method: string | null
+          receipt_number: string | null
+          sub_category_id: string | null
+          tenant_id: string
+          transaction_date: string
+          updated_at: string
+          updated_by: string | null
+          vendor_name: string | null
+        }
+        Insert: {
+          amount?: number | null
+          branch_id: string
+          category_id: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          employee_id?: string | null
+          id?: string
+          payment_method?: string | null
+          receipt_number?: string | null
+          sub_category_id?: string | null
+          tenant_id: string
+          transaction_date?: string
+          updated_at?: string
+          updated_by?: string | null
+          vendor_name?: string | null
+        }
+        Update: {
+          amount?: number | null
+          branch_id?: string
+          category_id?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          employee_id?: string | null
+          id?: string
+          payment_method?: string | null
+          receipt_number?: string | null
+          sub_category_id?: string | null
+          tenant_id?: string
+          transaction_date?: string
+          updated_at?: string
+          updated_by?: string | null
+          vendor_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "expenses_register_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branch_details"
+            referencedColumns: ["branch_id"]
+          },
+          {
+            foreignKeyName: "expenses_register_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "expenses_category"
+            referencedColumns: ["category_id"]
+          },
+          {
+            foreignKeyName: "expenses_register_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["employee_id"]
+          },
+          {
+            foreignKeyName: "expenses_register_sub_category_id_fkey"
+            columns: ["sub_category_id"]
+            isOneToOne: false
+            referencedRelation: "expenses_sub_category"
+            referencedColumns: ["sub_category_id"]
+          },
+          {
+            foreignKeyName: "expenses_register_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       expenses_sub_category: {
         Row: {
           category_id: string
