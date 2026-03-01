@@ -1,8 +1,9 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Scissors, Users, Store, Calendar, TrendingUp, LogOut } from "lucide-react";
+import { Scissors, Users, Store, Calendar, TrendingUp, LogOut, LayoutDashboard, GitBranch, UserCog, Calculator, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const Dashboard = () => {
   const { user, role, profile, loading, signOut } = useAuth();
