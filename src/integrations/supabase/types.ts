@@ -121,6 +121,220 @@ export type Database = {
           },
         ]
       }
+      employees: {
+        Row: {
+          accommodation_amount: number | null
+          address: string | null
+          advance_balance: number | null
+          assigned_branch_id: string | null
+          basic_salary: number | null
+          city: string | null
+          commission_rate: number | null
+          country: string | null
+          created_at: string
+          created_by: string | null
+          current_visa_expiry_date: string | null
+          current_visa_status: string | null
+          date_of_birth: string | null
+          email: string | null
+          emirates_id_expiry_date: string | null
+          emirates_id_number: string | null
+          employee_name: string
+          employee_number: string | null
+          employment_type: string | null
+          face_image_url: string | null
+          food_allowance: number | null
+          gender: string | null
+          hire_date: string | null
+          home_country_contact: string | null
+          id: string
+          iloe_insurance_expiry_date: string | null
+          iloe_insurance_number: string | null
+          is_archived: boolean | null
+          labor_card_expiry_date: string | null
+          labor_card_number: string | null
+          loan_balance: number | null
+          medical_insurance_expiry_date: string | null
+          medical_insurance_number: string | null
+          nationality: string | null
+          notes: string | null
+          ohc_expiry_date: string | null
+          ohc_number: string | null
+          ot_amount: number | null
+          outstanding_loan_amount: number | null
+          part_time_card_expiry_date: string | null
+          part_time_card_number: string | null
+          passport_expiry_date: string | null
+          passport_issue_date: string | null
+          passport_issuing_country: string | null
+          passport_number: string | null
+          phone: string | null
+          position: string | null
+          postal_code: string | null
+          profile_photo_url: string | null
+          recommended_by: string | null
+          referred_by: string | null
+          state: string | null
+          status: string | null
+          tenant_id: string
+          transport_amount: number | null
+          updated_at: string
+          updated_by: string | null
+          visa_branch_id: string | null
+          visa_charges_bal: number | null
+          visa_expiry_date: string | null
+          visa_issued_by: string | null
+        }
+        Insert: {
+          accommodation_amount?: number | null
+          address?: string | null
+          advance_balance?: number | null
+          assigned_branch_id?: string | null
+          basic_salary?: number | null
+          city?: string | null
+          commission_rate?: number | null
+          country?: string | null
+          created_at?: string
+          created_by?: string | null
+          current_visa_expiry_date?: string | null
+          current_visa_status?: string | null
+          date_of_birth?: string | null
+          email?: string | null
+          emirates_id_expiry_date?: string | null
+          emirates_id_number?: string | null
+          employee_name: string
+          employee_number?: string | null
+          employment_type?: string | null
+          face_image_url?: string | null
+          food_allowance?: number | null
+          gender?: string | null
+          hire_date?: string | null
+          home_country_contact?: string | null
+          id?: string
+          iloe_insurance_expiry_date?: string | null
+          iloe_insurance_number?: string | null
+          is_archived?: boolean | null
+          labor_card_expiry_date?: string | null
+          labor_card_number?: string | null
+          loan_balance?: number | null
+          medical_insurance_expiry_date?: string | null
+          medical_insurance_number?: string | null
+          nationality?: string | null
+          notes?: string | null
+          ohc_expiry_date?: string | null
+          ohc_number?: string | null
+          ot_amount?: number | null
+          outstanding_loan_amount?: number | null
+          part_time_card_expiry_date?: string | null
+          part_time_card_number?: string | null
+          passport_expiry_date?: string | null
+          passport_issue_date?: string | null
+          passport_issuing_country?: string | null
+          passport_number?: string | null
+          phone?: string | null
+          position?: string | null
+          postal_code?: string | null
+          profile_photo_url?: string | null
+          recommended_by?: string | null
+          referred_by?: string | null
+          state?: string | null
+          status?: string | null
+          tenant_id: string
+          transport_amount?: number | null
+          updated_at?: string
+          updated_by?: string | null
+          visa_branch_id?: string | null
+          visa_charges_bal?: number | null
+          visa_expiry_date?: string | null
+          visa_issued_by?: string | null
+        }
+        Update: {
+          accommodation_amount?: number | null
+          address?: string | null
+          advance_balance?: number | null
+          assigned_branch_id?: string | null
+          basic_salary?: number | null
+          city?: string | null
+          commission_rate?: number | null
+          country?: string | null
+          created_at?: string
+          created_by?: string | null
+          current_visa_expiry_date?: string | null
+          current_visa_status?: string | null
+          date_of_birth?: string | null
+          email?: string | null
+          emirates_id_expiry_date?: string | null
+          emirates_id_number?: string | null
+          employee_name?: string
+          employee_number?: string | null
+          employment_type?: string | null
+          face_image_url?: string | null
+          food_allowance?: number | null
+          gender?: string | null
+          hire_date?: string | null
+          home_country_contact?: string | null
+          id?: string
+          iloe_insurance_expiry_date?: string | null
+          iloe_insurance_number?: string | null
+          is_archived?: boolean | null
+          labor_card_expiry_date?: string | null
+          labor_card_number?: string | null
+          loan_balance?: number | null
+          medical_insurance_expiry_date?: string | null
+          medical_insurance_number?: string | null
+          nationality?: string | null
+          notes?: string | null
+          ohc_expiry_date?: string | null
+          ohc_number?: string | null
+          ot_amount?: number | null
+          outstanding_loan_amount?: number | null
+          part_time_card_expiry_date?: string | null
+          part_time_card_number?: string | null
+          passport_expiry_date?: string | null
+          passport_issue_date?: string | null
+          passport_issuing_country?: string | null
+          passport_number?: string | null
+          phone?: string | null
+          position?: string | null
+          postal_code?: string | null
+          profile_photo_url?: string | null
+          recommended_by?: string | null
+          referred_by?: string | null
+          state?: string | null
+          status?: string | null
+          tenant_id?: string
+          transport_amount?: number | null
+          updated_at?: string
+          updated_by?: string | null
+          visa_branch_id?: string | null
+          visa_charges_bal?: number | null
+          visa_expiry_date?: string | null
+          visa_issued_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employees_assigned_branch_id_fkey"
+            columns: ["assigned_branch_id"]
+            isOneToOne: false
+            referencedRelation: "branch_details"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employees_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employees_visa_branch_id_fkey"
+            columns: ["visa_branch_id"]
+            isOneToOne: false
+            referencedRelation: "branch_details"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
