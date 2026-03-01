@@ -1,0 +1,1 @@
+ALTER TABLE public.services RENAME TO default_services;

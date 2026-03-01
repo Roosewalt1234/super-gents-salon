@@ -121,6 +121,45 @@ export type Database = {
           },
         ]
       }
+      default_services: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          default_price: number | null
+          description: string | null
+          image_url: string | null
+          service_duration: number | null
+          service_id: string
+          service_name: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          default_price?: number | null
+          description?: string | null
+          image_url?: string | null
+          service_duration?: number | null
+          service_id?: string
+          service_name: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          default_price?: number | null
+          description?: string | null
+          image_url?: string | null
+          service_duration?: number | null
+          service_id?: string
+          service_name?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       employees: {
         Row: {
           accommodation_amount: number | null
@@ -372,45 +411,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      services: {
-        Row: {
-          created_at: string
-          created_by: string | null
-          default_price: number | null
-          description: string | null
-          image_url: string | null
-          service_duration: number | null
-          service_id: string
-          service_name: string
-          updated_at: string
-          updated_by: string | null
-        }
-        Insert: {
-          created_at?: string
-          created_by?: string | null
-          default_price?: number | null
-          description?: string | null
-          image_url?: string | null
-          service_duration?: number | null
-          service_id?: string
-          service_name: string
-          updated_at?: string
-          updated_by?: string | null
-        }
-        Update: {
-          created_at?: string
-          created_by?: string | null
-          default_price?: number | null
-          description?: string | null
-          image_url?: string | null
-          service_duration?: number | null
-          service_id?: string
-          service_name?: string
-          updated_at?: string
-          updated_by?: string | null
-        }
-        Relationships: []
       }
       tenants: {
         Row: {
