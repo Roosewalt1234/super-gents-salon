@@ -7,6 +7,15 @@ import { useState } from "react";
 
 const Dashboard = () => {
   const { user, role, profile, loading, signOut } = useAuth();
+  const [activeNav, setActiveNav] = useState("dashboard");
+
+  const navItems = [
+    { id: "dashboard", label: "Management Dashboard", icon: LayoutDashboard },
+    { id: "branch", label: "Branch Management", icon: GitBranch },
+    { id: "hr", label: "HR Management", icon: UserCog },
+    { id: "accounting", label: "Accounting", icon: Calculator },
+    { id: "settings", label: "Settings", icon: Settings },
+  ];
 
   if (loading) {
     return (
