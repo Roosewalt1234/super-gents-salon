@@ -674,6 +674,41 @@ export type Database = {
         }
         Relationships: []
       }
+      expenses_sub_category: {
+        Row: {
+          category_id: string
+          created_at: string
+          description: string | null
+          sub_category_id: string
+          sub_category_name: string
+          updated_at: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          description?: string | null
+          sub_category_id?: string
+          sub_category_name: string
+          updated_at?: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          description?: string | null
+          sub_category_id?: string
+          sub_category_name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "expenses_sub_category_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "expenses_category"
+            referencedColumns: ["category_id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
