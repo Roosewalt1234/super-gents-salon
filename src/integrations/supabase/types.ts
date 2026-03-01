@@ -17,6 +17,7 @@ export type Database = {
       branch_details: {
         Row: {
           barbers_count: number | null
+          branch_id: string
           branch_name: string
           created_at: string
           created_by: string | null
@@ -25,7 +26,6 @@ export type Database = {
           establishment_card_number: string | null
           has_partnership: boolean | null
           has_vat: boolean | null
-          id: string
           investment_percentage: number | null
           last_updated_by: string | null
           license_expiry_date: string | null
@@ -49,6 +49,7 @@ export type Database = {
         }
         Insert: {
           barbers_count?: number | null
+          branch_id?: string
           branch_name: string
           created_at?: string
           created_by?: string | null
@@ -57,7 +58,6 @@ export type Database = {
           establishment_card_number?: string | null
           has_partnership?: boolean | null
           has_vat?: boolean | null
-          id?: string
           investment_percentage?: number | null
           last_updated_by?: string | null
           license_expiry_date?: string | null
@@ -81,6 +81,7 @@ export type Database = {
         }
         Update: {
           barbers_count?: number | null
+          branch_id?: string
           branch_name?: string
           created_at?: string
           created_by?: string | null
@@ -89,7 +90,6 @@ export type Database = {
           establishment_card_number?: string | null
           has_partnership?: boolean | null
           has_vat?: boolean | null
-          id?: string
           investment_percentage?: number | null
           last_updated_by?: string | null
           license_expiry_date?: string | null
@@ -139,6 +139,7 @@ export type Database = {
           email: string | null
           emirates_id_expiry_date: string | null
           emirates_id_number: string | null
+          employee_id: string
           employee_name: string
           employee_number: string | null
           employment_type: string | null
@@ -147,7 +148,6 @@ export type Database = {
           gender: string | null
           hire_date: string | null
           home_country_contact: string | null
-          id: string
           iloe_insurance_expiry_date: string | null
           iloe_insurance_number: string | null
           is_archived: boolean | null
@@ -202,6 +202,7 @@ export type Database = {
           email?: string | null
           emirates_id_expiry_date?: string | null
           emirates_id_number?: string | null
+          employee_id?: string
           employee_name: string
           employee_number?: string | null
           employment_type?: string | null
@@ -210,7 +211,6 @@ export type Database = {
           gender?: string | null
           hire_date?: string | null
           home_country_contact?: string | null
-          id?: string
           iloe_insurance_expiry_date?: string | null
           iloe_insurance_number?: string | null
           is_archived?: boolean | null
@@ -265,6 +265,7 @@ export type Database = {
           email?: string | null
           emirates_id_expiry_date?: string | null
           emirates_id_number?: string | null
+          employee_id?: string
           employee_name?: string
           employee_number?: string | null
           employment_type?: string | null
@@ -273,7 +274,6 @@ export type Database = {
           gender?: string | null
           hire_date?: string | null
           home_country_contact?: string | null
-          id?: string
           iloe_insurance_expiry_date?: string | null
           iloe_insurance_number?: string | null
           is_archived?: boolean | null
@@ -317,7 +317,7 @@ export type Database = {
             columns: ["assigned_branch_id"]
             isOneToOne: false
             referencedRelation: "branch_details"
-            referencedColumns: ["id"]
+            referencedColumns: ["branch_id"]
           },
           {
             foreignKeyName: "employees_tenant_id_fkey"
@@ -331,7 +331,7 @@ export type Database = {
             columns: ["visa_branch_id"]
             isOneToOne: false
             referencedRelation: "branch_details"
-            referencedColumns: ["id"]
+            referencedColumns: ["branch_id"]
           },
         ]
       }
@@ -366,6 +366,59 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "profiles_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      services: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          default_price: number | null
+          description: string | null
+          image_url: string | null
+          price: number | null
+          service_duration: number | null
+          service_id: string
+          service_name: string
+          tenant_id: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          default_price?: number | null
+          description?: string | null
+          image_url?: string | null
+          price?: number | null
+          service_duration?: number | null
+          service_id?: string
+          service_name: string
+          tenant_id: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          default_price?: number | null
+          description?: string | null
+          image_url?: string | null
+          price?: number | null
+          service_duration?: number | null
+          service_id?: string
+          service_name?: string
+          tenant_id?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "services_tenant_id_fkey"
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
