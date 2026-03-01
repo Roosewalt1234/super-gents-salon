@@ -53,8 +53,8 @@ const Dashboard = () => {
             </div>
             {activeItem && (
               <div className="border-l border-border pl-6">
-                <h1 className="text-sm font-bold text-foreground leading-tight">{activeItem.title}</h1>
-                <p className="text-xs text-muted-foreground">{activeItem.subtitle}</p>
+                <h1 className="text-lg font-bold text-foreground leading-tight">{activeItem.title}</h1>
+                <p className="text-sm text-muted-foreground">{activeItem.subtitle}</p>
               </div>
             )}
           </div>
