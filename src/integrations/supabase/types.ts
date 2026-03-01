@@ -379,6 +379,63 @@ export type Database = {
           },
         ]
       }
+      employee_visa_charges_transactions: {
+        Row: {
+          created_at: string
+          employee_id: string
+          id: string
+          tenant_id: string
+          transaction_date: string
+          updated_at: string
+          updated_by: string | null
+          user_id: string | null
+          visa_charges_amount: number | null
+          visa_charges_balance: number | null
+          visa_charges_deduction_amount: number | null
+        }
+        Insert: {
+          created_at?: string
+          employee_id: string
+          id?: string
+          tenant_id: string
+          transaction_date?: string
+          updated_at?: string
+          updated_by?: string | null
+          user_id?: string | null
+          visa_charges_amount?: number | null
+          visa_charges_balance?: number | null
+          visa_charges_deduction_amount?: number | null
+        }
+        Update: {
+          created_at?: string
+          employee_id?: string
+          id?: string
+          tenant_id?: string
+          transaction_date?: string
+          updated_at?: string
+          updated_by?: string | null
+          user_id?: string | null
+          visa_charges_amount?: number | null
+          visa_charges_balance?: number | null
+          visa_charges_deduction_amount?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_visa_charges_transactions_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["employee_id"]
+          },
+          {
+            foreignKeyName: "employee_visa_charges_transactions_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employees: {
         Row: {
           accommodation_amount: number | null
