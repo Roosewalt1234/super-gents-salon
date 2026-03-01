@@ -650,6 +650,30 @@ export type Database = {
           },
         ]
       }
+      expenses_category: {
+        Row: {
+          category_id: string
+          category_name: string
+          created_at: string
+          description: string | null
+          updated_at: string
+        }
+        Insert: {
+          category_id?: string
+          category_name: string
+          created_at?: string
+          description?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category_id?: string
+          category_name?: string
+          created_at?: string
+          description?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
