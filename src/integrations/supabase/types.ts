@@ -322,6 +322,63 @@ export type Database = {
           },
         ]
       }
+      employee_loan_transactions: {
+        Row: {
+          created_at: string
+          employee_id: string
+          id: string
+          loan_amount: number | null
+          loan_balance: number | null
+          loan_deduction_amount: number | null
+          tenant_id: string
+          transaction_date: string
+          updated_at: string
+          updated_by: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          employee_id: string
+          id?: string
+          loan_amount?: number | null
+          loan_balance?: number | null
+          loan_deduction_amount?: number | null
+          tenant_id: string
+          transaction_date?: string
+          updated_at?: string
+          updated_by?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          employee_id?: string
+          id?: string
+          loan_amount?: number | null
+          loan_balance?: number | null
+          loan_deduction_amount?: number | null
+          tenant_id?: string
+          transaction_date?: string
+          updated_at?: string
+          updated_by?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_loan_transactions_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["employee_id"]
+          },
+          {
+            foreignKeyName: "employee_loan_transactions_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employees: {
         Row: {
           accommodation_amount: number | null
