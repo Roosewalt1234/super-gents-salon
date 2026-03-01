@@ -380,7 +380,6 @@ export type Database = {
           default_price: number | null
           description: string | null
           image_url: string | null
-          price: number | null
           service_duration: number | null
           service_id: string
           service_name: string
@@ -393,7 +392,6 @@ export type Database = {
           default_price?: number | null
           description?: string | null
           image_url?: string | null
-          price?: number | null
           service_duration?: number | null
           service_id?: string
           service_name: string
@@ -406,7 +404,6 @@ export type Database = {
           default_price?: number | null
           description?: string | null
           image_url?: string | null
-          price?: number | null
           service_duration?: number | null
           service_id?: string
           service_name?: string
