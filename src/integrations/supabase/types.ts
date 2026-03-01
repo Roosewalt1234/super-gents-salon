@@ -121,6 +121,98 @@ export type Database = {
           },
         ]
       }
+      daily_sales: {
+        Row: {
+          amount: number | null
+          bank_charges: number | null
+          branch_id: string
+          created_at: string
+          discount_amount: number | null
+          discount_percentage: number | null
+          employee_id: string | null
+          payment_method: string | null
+          sale_date: string
+          sale_id: string
+          sale_time: string | null
+          service_id: string | null
+          subtotal: number | null
+          tenant_id: string
+          total_amount: number | null
+          updated_at: string
+          vat_amount: number | null
+          weekday: string | null
+        }
+        Insert: {
+          amount?: number | null
+          bank_charges?: number | null
+          branch_id: string
+          created_at?: string
+          discount_amount?: number | null
+          discount_percentage?: number | null
+          employee_id?: string | null
+          payment_method?: string | null
+          sale_date?: string
+          sale_id?: string
+          sale_time?: string | null
+          service_id?: string | null
+          subtotal?: number | null
+          tenant_id: string
+          total_amount?: number | null
+          updated_at?: string
+          vat_amount?: number | null
+          weekday?: string | null
+        }
+        Update: {
+          amount?: number | null
+          bank_charges?: number | null
+          branch_id?: string
+          created_at?: string
+          discount_amount?: number | null
+          discount_percentage?: number | null
+          employee_id?: string | null
+          payment_method?: string | null
+          sale_date?: string
+          sale_id?: string
+          sale_time?: string | null
+          service_id?: string | null
+          subtotal?: number | null
+          tenant_id?: string
+          total_amount?: number | null
+          updated_at?: string
+          vat_amount?: number | null
+          weekday?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_sales_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branch_details"
+            referencedColumns: ["branch_id"]
+          },
+          {
+            foreignKeyName: "daily_sales_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["employee_id"]
+          },
+          {
+            foreignKeyName: "daily_sales_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "default_services"
+            referencedColumns: ["service_id"]
+          },
+          {
+            foreignKeyName: "daily_sales_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       default_services: {
         Row: {
           created_at: string
