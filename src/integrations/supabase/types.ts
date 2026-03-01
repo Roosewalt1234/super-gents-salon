@@ -853,6 +853,111 @@ export type Database = {
           },
         ]
       }
+      payroll_records: {
+        Row: {
+          adv_ded_amount: number | null
+          basic_salary: number | null
+          bonus_amount: number | null
+          commission_amount: number | null
+          created_at: string
+          employee_id: string
+          gross_pay: number | null
+          id: string
+          loan_ded_amount: number | null
+          month: string | null
+          net_pay: number | null
+          notes: string | null
+          overtime_amount: number | null
+          overtime_hours: number | null
+          overtime_rate: number | null
+          pay_date: string | null
+          pay_month: string | null
+          pay_period_end: string | null
+          pay_period_start: string | null
+          processed_at: string | null
+          salary_earned: number | null
+          status: string | null
+          tenant_id: string
+          total_days_worked: number | null
+          updated_at: string
+          updated_by: string | null
+          visa_charges_ded_amount: number | null
+        }
+        Insert: {
+          adv_ded_amount?: number | null
+          basic_salary?: number | null
+          bonus_amount?: number | null
+          commission_amount?: number | null
+          created_at?: string
+          employee_id: string
+          gross_pay?: number | null
+          id?: string
+          loan_ded_amount?: number | null
+          month?: string | null
+          net_pay?: number | null
+          notes?: string | null
+          overtime_amount?: number | null
+          overtime_hours?: number | null
+          overtime_rate?: number | null
+          pay_date?: string | null
+          pay_month?: string | null
+          pay_period_end?: string | null
+          pay_period_start?: string | null
+          processed_at?: string | null
+          salary_earned?: number | null
+          status?: string | null
+          tenant_id: string
+          total_days_worked?: number | null
+          updated_at?: string
+          updated_by?: string | null
+          visa_charges_ded_amount?: number | null
+        }
+        Update: {
+          adv_ded_amount?: number | null
+          basic_salary?: number | null
+          bonus_amount?: number | null
+          commission_amount?: number | null
+          created_at?: string
+          employee_id?: string
+          gross_pay?: number | null
+          id?: string
+          loan_ded_amount?: number | null
+          month?: string | null
+          net_pay?: number | null
+          notes?: string | null
+          overtime_amount?: number | null
+          overtime_hours?: number | null
+          overtime_rate?: number | null
+          pay_date?: string | null
+          pay_month?: string | null
+          pay_period_end?: string | null
+          pay_period_start?: string | null
+          processed_at?: string | null
+          salary_earned?: number | null
+          status?: string | null
+          tenant_id?: string
+          total_days_worked?: number | null
+          updated_at?: string
+          updated_by?: string | null
+          visa_charges_ded_amount?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payroll_records_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["employee_id"]
+          },
+          {
+            foreignKeyName: "payroll_records_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
