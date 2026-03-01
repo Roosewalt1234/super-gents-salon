@@ -3,7 +3,9 @@ import { Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Scissors, Users, Store, Calendar, TrendingUp, LogOut, LayoutDashboard, UserCog, Calculator, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
+
+const BranchManagement = lazy(() => import("@/pages/BranchManagement"));
 
 const Dashboard = () => {
   const { user, role, profile, loading, signOut } = useAuth();
