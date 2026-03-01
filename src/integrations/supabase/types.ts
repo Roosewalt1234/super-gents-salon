@@ -802,6 +802,57 @@ export type Database = {
           },
         ]
       }
+      monthly_attendance: {
+        Row: {
+          created_at: string
+          employee_id: string
+          id: string
+          month: string | null
+          tenant_id: string
+          total_days_worked: number | null
+          updated_at: string
+          updated_by: string | null
+          year: number | null
+        }
+        Insert: {
+          created_at?: string
+          employee_id: string
+          id?: string
+          month?: string | null
+          tenant_id: string
+          total_days_worked?: number | null
+          updated_at?: string
+          updated_by?: string | null
+          year?: number | null
+        }
+        Update: {
+          created_at?: string
+          employee_id?: string
+          id?: string
+          month?: string | null
+          tenant_id?: string
+          total_days_worked?: number | null
+          updated_at?: string
+          updated_by?: string | null
+          year?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "monthly_attendance_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["employee_id"]
+          },
+          {
+            foreignKeyName: "monthly_attendance_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
