@@ -252,6 +252,76 @@ export type Database = {
         }
         Relationships: []
       }
+      employee_advance_records: {
+        Row: {
+          advance_balance: number | null
+          amount_deducted: number | null
+          amount_given: number | null
+          branch_id: string
+          created_at: string
+          description: string | null
+          employee_id: string
+          id: string
+          month: string | null
+          tenant_id: string
+          transaction_date: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          advance_balance?: number | null
+          amount_deducted?: number | null
+          amount_given?: number | null
+          branch_id: string
+          created_at?: string
+          description?: string | null
+          employee_id: string
+          id?: string
+          month?: string | null
+          tenant_id: string
+          transaction_date?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          advance_balance?: number | null
+          amount_deducted?: number | null
+          amount_given?: number | null
+          branch_id?: string
+          created_at?: string
+          description?: string | null
+          employee_id?: string
+          id?: string
+          month?: string | null
+          tenant_id?: string
+          transaction_date?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_advance_records_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branch_details"
+            referencedColumns: ["branch_id"]
+          },
+          {
+            foreignKeyName: "employee_advance_records_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["employee_id"]
+          },
+          {
+            foreignKeyName: "employee_advance_records_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employees: {
         Row: {
           accommodation_amount: number | null
