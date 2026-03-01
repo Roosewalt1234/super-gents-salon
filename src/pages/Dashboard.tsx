@@ -1,11 +1,21 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Scissors, Users, Store, Calendar, TrendingUp, LogOut } from "lucide-react";
+import { Scissors, Users, Store, Calendar, TrendingUp, LogOut, LayoutDashboard, GitBranch, UserCog, Calculator, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const Dashboard = () => {
   const { user, role, profile, loading, signOut } = useAuth();
+  const [activeNav, setActiveNav] = useState("dashboard");
+
+  const navItems = [
+    { id: "dashboard", label: "Management Dashboard", icon: LayoutDashboard },
+    { id: "branch", label: "Branch Management", icon: GitBranch },
+    { id: "hr", label: "HR Management", icon: UserCog },
+    { id: "accounting", label: "Accounting", icon: Calculator },
+    { id: "settings", label: "Settings", icon: Settings },
+  ];
 
   if (loading) {
     return (
@@ -48,6 +58,25 @@ const Dashboard = () => {
             >
               <LogOut className="w-4 h-4" />
             </Button>
+          </div>
+        </div>
+        {/* Navigation Bar */}
+        <div className="border-t border-border">
+          <div className="container flex items-center gap-1 overflow-x-auto py-1">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveNav(item.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                  activeNav === item.id
+                    ? "bg-primary text-primary-foreground shadow-teal-sm"
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                }`}
+              >
+                <item.icon className="w-4 h-4" />
+                {item.label}
+              </button>
+            ))}
           </div>
         </div>
       </header>
