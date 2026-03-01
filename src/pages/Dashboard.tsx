@@ -60,6 +60,25 @@ const Dashboard = () => {
             </Button>
           </div>
         </div>
+        {/* Navigation Bar */}
+        <div className="border-t border-border">
+          <div className="container flex items-center gap-1 overflow-x-auto py-1">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveNav(item.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                  activeNav === item.id
+                    ? "bg-primary text-primary-foreground shadow-teal-sm"
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                }`}
+              >
+                <item.icon className="w-4 h-4" />
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
       </header>
 
       <main className="container py-8">
