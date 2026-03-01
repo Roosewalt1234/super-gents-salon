@@ -14,6 +14,113 @@ export type Database = {
   }
   public: {
     Tables: {
+      branch_details: {
+        Row: {
+          barbers_count: number | null
+          branch_name: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          establishment_card_expiry_date: string | null
+          establishment_card_number: string | null
+          has_partnership: boolean | null
+          has_vat: boolean | null
+          id: string
+          investment_percentage: number | null
+          last_updated_by: string | null
+          license_expiry_date: string | null
+          license_number: string | null
+          location: string | null
+          number_of_chairs: number | null
+          number_of_cheques: number | null
+          partner_company_name: string | null
+          partner_name: string | null
+          phone: string | null
+          profit_sharing_percentage: number | null
+          rent_amount: number | null
+          rental_agreement_expiry_date: string | null
+          rental_agreement_number: string | null
+          rental_agreement_start_date: string | null
+          services_count: number | null
+          shop_number: string | null
+          status: string | null
+          tenant_id: string
+          updated_at: string
+        }
+        Insert: {
+          barbers_count?: number | null
+          branch_name: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          establishment_card_expiry_date?: string | null
+          establishment_card_number?: string | null
+          has_partnership?: boolean | null
+          has_vat?: boolean | null
+          id?: string
+          investment_percentage?: number | null
+          last_updated_by?: string | null
+          license_expiry_date?: string | null
+          license_number?: string | null
+          location?: string | null
+          number_of_chairs?: number | null
+          number_of_cheques?: number | null
+          partner_company_name?: string | null
+          partner_name?: string | null
+          phone?: string | null
+          profit_sharing_percentage?: number | null
+          rent_amount?: number | null
+          rental_agreement_expiry_date?: string | null
+          rental_agreement_number?: string | null
+          rental_agreement_start_date?: string | null
+          services_count?: number | null
+          shop_number?: string | null
+          status?: string | null
+          tenant_id: string
+          updated_at?: string
+        }
+        Update: {
+          barbers_count?: number | null
+          branch_name?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          establishment_card_expiry_date?: string | null
+          establishment_card_number?: string | null
+          has_partnership?: boolean | null
+          has_vat?: boolean | null
+          id?: string
+          investment_percentage?: number | null
+          last_updated_by?: string | null
+          license_expiry_date?: string | null
+          license_number?: string | null
+          location?: string | null
+          number_of_chairs?: number | null
+          number_of_cheques?: number | null
+          partner_company_name?: string | null
+          partner_name?: string | null
+          phone?: string | null
+          profit_sharing_percentage?: number | null
+          rent_amount?: number | null
+          rental_agreement_expiry_date?: string | null
+          rental_agreement_number?: string | null
+          rental_agreement_start_date?: string | null
+          services_count?: number | null
+          shop_number?: string | null
+          status?: string | null
+          tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "branch_details_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
