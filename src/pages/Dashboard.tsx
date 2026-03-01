@@ -12,12 +12,14 @@ const Dashboard = () => {
   const [activeNav, setActiveNav] = useState("dashboard");
 
   const navItems = [
-    { id: "dashboard", label: "Management Dashboard", icon: LayoutDashboard },
-    { id: "branch", label: "Branch Management", icon: Store },
-    { id: "hr", label: "HR Management", icon: UserCog },
-    { id: "accounting", label: "Accounting", icon: Calculator },
-    { id: "settings", label: "Settings", icon: Settings },
+    { id: "dashboard", label: "Management Dashboard", icon: LayoutDashboard, title: "Dashboard", subtitle: `Welcome back, ${profile?.full_name || "there"}!` },
+    { id: "branch", label: "Branch Management", icon: Store, title: "Branch Management", subtitle: "Manage all your branches and settings" },
+    { id: "hr", label: "HR Management", icon: UserCog, title: "HR Management", subtitle: "Manage your staff and human resources" },
+    { id: "accounting", label: "Accounting", icon: Calculator, title: "Accounting", subtitle: "Financial overview and reports" },
+    { id: "settings", label: "Settings", icon: Settings, title: "Settings", subtitle: "Configure your salon preferences" },
   ];
+
+  const activeItem = navItems.find((item) => item.id === activeNav);
 
   if (loading) {
     return (
