@@ -322,6 +322,69 @@ export type Database = {
           },
         ]
       }
+      employee_liability_records: {
+        Row: {
+          created_at: string
+          employee_id: string
+          id: string
+          loan_amount: number | null
+          loan_balance: number | null
+          loan_deduction_amount: number | null
+          tenant_id: string
+          updated_at: string
+          updated_by: string | null
+          user_id: string | null
+          visa_amount: number | null
+          visa_balance: number | null
+          visa_deduction_amount: number | null
+        }
+        Insert: {
+          created_at?: string
+          employee_id: string
+          id?: string
+          loan_amount?: number | null
+          loan_balance?: number | null
+          loan_deduction_amount?: number | null
+          tenant_id: string
+          updated_at?: string
+          updated_by?: string | null
+          user_id?: string | null
+          visa_amount?: number | null
+          visa_balance?: number | null
+          visa_deduction_amount?: number | null
+        }
+        Update: {
+          created_at?: string
+          employee_id?: string
+          id?: string
+          loan_amount?: number | null
+          loan_balance?: number | null
+          loan_deduction_amount?: number | null
+          tenant_id?: string
+          updated_at?: string
+          updated_by?: string | null
+          user_id?: string | null
+          visa_amount?: number | null
+          visa_balance?: number | null
+          visa_deduction_amount?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_liability_records_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["employee_id"]
+          },
+          {
+            foreignKeyName: "employee_liability_records_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employees: {
         Row: {
           accommodation_amount: number | null
