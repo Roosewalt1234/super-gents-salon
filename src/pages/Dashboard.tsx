@@ -1,7 +1,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Scissors, Users, Store, Calendar, TrendingUp, LogOut, LayoutDashboard, GitBranch, UserCog, Calculator, Settings } from "lucide-react";
+import { Scissors, Users, Store, Calendar, TrendingUp, LogOut, LayoutDashboard, UserCog, Calculator, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
@@ -11,7 +11,7 @@ const Dashboard = () => {
 
   const navItems = [
     { id: "dashboard", label: "Management Dashboard", icon: LayoutDashboard },
-    { id: "branch", label: "Branch Management", icon: GitBranch },
+    { id: "branch", label: "Branch Management", icon: Store },
     { id: "hr", label: "HR Management", icon: UserCog },
     { id: "accounting", label: "Accounting", icon: Calculator },
     { id: "settings", label: "Settings", icon: Settings },
