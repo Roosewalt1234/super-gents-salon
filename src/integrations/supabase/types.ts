@@ -384,7 +384,6 @@ export type Database = {
           service_duration: number | null
           service_id: string
           service_name: string
-          tenant_id: string
           updated_at: string
           updated_by: string | null
         }
@@ -398,7 +397,6 @@ export type Database = {
           service_duration?: number | null
           service_id?: string
           service_name: string
-          tenant_id: string
           updated_at?: string
           updated_by?: string | null
         }
@@ -412,19 +410,10 @@ export type Database = {
           service_duration?: number | null
           service_id?: string
           service_name?: string
-          tenant_id?: string
           updated_at?: string
           updated_by?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "services_tenant_id_fkey"
-            columns: ["tenant_id"]
-            isOneToOne: false
-            referencedRelation: "tenants"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       tenants: {
         Row: {
