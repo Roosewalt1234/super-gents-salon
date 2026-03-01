@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { Scissors, Mail, Lock, User } from "lucide-react";
+import { Scissors, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 
 const Signup = () => {
   const navigate = useNavigate();
