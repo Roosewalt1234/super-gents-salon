@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { X, Pencil, Calculator } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -63,6 +63,15 @@ const EditSaleModal = ({
   const [saleTime, setSaleTime] = useState(sale.sale_time?.slice(0, 5) ?? "");
   const [loadingServices, setLoadingServices] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  const amountRef = useRef<HTMLInputElement>(null);
+  const discountRef = useRef<HTMLInputElement>(null);
+  const saleDateRef = useRef<HTMLInputElement>(null);
+  const saleTimeRef = useRef<HTMLInputElement>(null);
+  const saveRef = useRef<HTMLButtonElement>(null);
+
+  const nextOnEnter = (next: React.RefObject<HTMLElement>) =>
+    (e: React.KeyboardEvent) => { if (e.key === "Enter") { e.preventDefault(); next.current?.focus(); } };
 
   /* Load services when branch set/changes */
   useEffect(() => {
@@ -245,12 +254,14 @@ const EditSaleModal = ({
           <div className="space-y-1.5">
             <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Amount (AED) *</Label>
             <Input
+              ref={amountRef}
               type="number"
               min="0"
               step="0.01"
               placeholder="0.00"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
+              onKeyDown={nextOnEnter(discountRef)}
             />
           </div>
 
@@ -258,6 +269,7 @@ const EditSaleModal = ({
           <div className="space-y-1.5">
             <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Discount (%)</Label>
             <Input
+              ref={discountRef}
               type="number"
               min="0"
               max="100"
@@ -265,6 +277,7 @@ const EditSaleModal = ({
               placeholder="0"
               value={discountPct}
               onChange={(e) => setDiscountPct(e.target.value)}
+              onKeyDown={nextOnEnter(saleDateRef)}
             />
           </div>
 
@@ -287,17 +300,21 @@ const EditSaleModal = ({
             <div className="space-y-1.5">
               <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Sale Date *</Label>
               <Input
+                ref={saleDateRef}
                 type="date"
                 value={saleDate}
                 onChange={(e) => setSaleDate(e.target.value)}
+                onKeyDown={nextOnEnter(saleTimeRef)}
               />
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Sale Time</Label>
               <Input
+                ref={saleTimeRef}
                 type="time"
                 value={saleTime}
                 onChange={(e) => setSaleTime(e.target.value)}
+                onKeyDown={nextOnEnter(saveRef)}
               />
             </div>
           </div>
@@ -356,6 +373,7 @@ const EditSaleModal = ({
             Cancel
           </Button>
           <Button
+            ref={saveRef}
             onClick={handleSave}
             disabled={saving}
             className="min-w-[130px] teal-gradient text-primary-foreground shadow-teal-sm hover:shadow-teal-md active:scale-95 transition-all duration-200"

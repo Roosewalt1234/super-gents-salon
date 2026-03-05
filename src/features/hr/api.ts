@@ -19,6 +19,7 @@ export interface Employee {
   outstanding_loan_amount: number | null;
   loan_balance: number | null;
   visa_charges_bal: number | null;
+  face_image_url: string | null;
 }
 
 export interface CreateEmployeePayload {
@@ -75,7 +76,7 @@ export async function fetchEmployees(tenantId: string): Promise<Employee[]> {
   const { data, error } = await supabase
     .from("employees")
     .select(
-      "employee_id, employee_name, employee_number, position, employment_type, gender, phone, email, nationality, status, assigned_branch_id, basic_salary, hire_date, tenant_id, is_archived, outstanding_loan_amount, loan_balance, visa_charges_bal"
+      "employee_id, employee_name, employee_number, position, employment_type, gender, phone, email, nationality, status, assigned_branch_id, basic_salary, hire_date, tenant_id, is_archived, outstanding_loan_amount, loan_balance, visa_charges_bal, face_image_url"
     )
     .eq("tenant_id", tenantId)
     .neq("is_archived", true)

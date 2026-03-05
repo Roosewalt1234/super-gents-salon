@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { X, Receipt } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -73,6 +73,16 @@ const ExpenseFormModal = ({
   const [receiptNumber, setReceiptNumber] = useState(expense?.receipt_number ?? "");
   const [description, setDescription] = useState(expense?.description ?? "");
   const [saving, setSaving] = useState(false);
+
+  const amountRef = useRef<HTMLInputElement>(null);
+  const dateRef = useRef<HTMLInputElement>(null);
+  const vendorRef = useRef<HTMLInputElement>(null);
+  const receiptRef = useRef<HTMLInputElement>(null);
+  const descRef = useRef<HTMLTextAreaElement>(null);
+  const saveRef = useRef<HTMLButtonElement>(null);
+
+  const nextOnEnter = (next: React.RefObject<HTMLElement>) =>
+    (e: React.KeyboardEvent) => { if (e.key === "Enter") { e.preventDefault(); next.current?.focus(); } };
 
   /* Reset when opening in add mode */
   useEffect(() => {
@@ -264,12 +274,14 @@ const ExpenseFormModal = ({
             <div className="space-y-1.5">
               <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Amount (AED) *</Label>
               <Input
+                ref={amountRef}
                 type="number"
                 min="0"
                 step="0.01"
                 placeholder="0.00"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
+                onKeyDown={nextOnEnter(dateRef)}
               />
             </div>
             <div className="space-y-1.5">
@@ -292,9 +304,11 @@ const ExpenseFormModal = ({
           <div className="space-y-1.5">
             <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Transaction Date *</Label>
             <Input
+              ref={dateRef}
               type="date"
               value={transactionDate}
               onChange={(e) => setTransactionDate(e.target.value)}
+              onKeyDown={nextOnEnter(vendorRef)}
             />
           </div>
 
@@ -303,17 +317,21 @@ const ExpenseFormModal = ({
             <div className="space-y-1.5">
               <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Vendor Name</Label>
               <Input
+                ref={vendorRef}
                 placeholder="Vendor / Supplier…"
                 value={vendorName}
                 onChange={(e) => setVendorName(e.target.value)}
+                onKeyDown={nextOnEnter(receiptRef)}
               />
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Receipt No.</Label>
               <Input
+                ref={receiptRef}
                 placeholder="Receipt number…"
                 value={receiptNumber}
                 onChange={(e) => setReceiptNumber(e.target.value)}
+                onKeyDown={nextOnEnter(descRef)}
               />
             </div>
           </div>
@@ -322,9 +340,11 @@ const ExpenseFormModal = ({
           <div className="space-y-1.5">
             <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Description</Label>
             <Textarea
+              ref={descRef}
               placeholder="Optional notes…"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              onKeyDown={nextOnEnter(saveRef)}
               rows={2}
               className="resize-none"
             />
@@ -342,6 +362,7 @@ const ExpenseFormModal = ({
             Cancel
           </Button>
           <Button
+            ref={saveRef}
             onClick={handleSave}
             disabled={saving}
             className="min-w-[130px] teal-gradient text-primary-foreground shadow-teal-sm hover:shadow-teal-md active:scale-95 transition-all duration-200"

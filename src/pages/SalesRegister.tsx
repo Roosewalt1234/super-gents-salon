@@ -276,30 +276,26 @@ const SalesRegister = () => {
       label: "Total Cash",
       value: `AED ${stats.totalCash.toFixed(2)}`,
       icon: Banknote,
-      color: "text-emerald-500",
-      bg: "bg-emerald-500/10",
+      gradient: "from-emerald-500/40 to-teal-600/40",
     },
     {
       label: "Total Card",
       value: `AED ${stats.totalCard.toFixed(2)}`,
       icon: CreditCard,
-      color: "text-blue-500",
-      bg: "bg-blue-500/10",
+      gradient: "from-blue-500/40 to-indigo-600/40",
     },
     {
       label: "Total Revenue",
       value: `AED ${stats.totalAmount.toFixed(2)}`,
       icon: TrendingUp,
-      color: "text-primary",
-      bg: "bg-primary/10",
+      gradient: "from-teal-500/40 to-cyan-600/40",
     },
     {
       label: "Top Branch",
       value: stats.topBranch,
       sub: stats.topBranchAmt > 0 ? `AED ${stats.topBranchAmt.toFixed(2)}` : undefined,
       icon: Award,
-      color: "text-amber-500",
-      bg: "bg-amber-500/10",
+      gradient: "from-amber-500/40 to-orange-500/40",
     },
   ];
 
@@ -343,18 +339,16 @@ const SalesRegister = () => {
           {statCards.map((card) => (
             <div
               key={card.label}
-              className="bg-card rounded-2xl border border-border p-5 flex items-start gap-4"
+              className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${card.gradient} px-5 py-5 shadow-md hover:shadow-lg transition-shadow`}
             >
-              <div className={`w-10 h-10 rounded-xl ${card.bg} flex items-center justify-center shrink-0`}>
-                <card.icon className={`w-5 h-5 ${card.color}`} />
+              <div className="absolute -right-6 -top-6 w-36 h-36 rounded-full bg-white/15 pointer-events-none" />
+              <div className="absolute right-4 -bottom-8 w-28 h-28 rounded-full bg-white/10 pointer-events-none" />
+              <div className="relative flex items-start justify-between mb-3">
+                <p className="text-[11px] font-semibold text-black/70 uppercase tracking-widest">{card.label}</p>
+                <card.icon className="w-5 h-5 text-black/60 shrink-0" />
               </div>
-              <div className="min-w-0">
-                <p className="text-xs text-muted-foreground font-medium">{card.label}</p>
-                <p className="text-base font-bold text-foreground truncate mt-0.5">{card.value}</p>
-                {card.sub && (
-                  <p className="text-xs text-muted-foreground mt-0.5">{card.sub}</p>
-                )}
-              </div>
+              <p className="relative text-2xl font-bold text-black tabular-nums leading-tight truncate">{card.value}</p>
+              {card.sub && <p className="relative text-[11px] text-black/60 mt-1">{card.sub}</p>}
             </div>
           ))}
         </motion.div>
@@ -443,7 +437,6 @@ const SalesRegister = () => {
                       <th className="text-left px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Barber</th>
                       <th className="text-left px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Service</th>
                       <th className="text-right px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Amount</th>
-                      <th className="text-right px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Discount</th>
                       <th className="text-right px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Total</th>
                       <th className="text-center px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Payment</th>
                       <th className="px-4 py-3" />
@@ -470,13 +463,6 @@ const SalesRegister = () => {
                         </td>
                         <td className="px-4 py-3 text-right">
                           <p className="text-foreground">AED {(sale.amount ?? 0).toFixed(2)}</p>
-                        </td>
-                        <td className="px-4 py-3 text-right">
-                          {(sale.discount_amount ?? 0) > 0 ? (
-                            <p className="text-orange-500">-AED {sale.discount_amount!.toFixed(2)}</p>
-                          ) : (
-                            <p className="text-muted-foreground">—</p>
-                          )}
                         </td>
                         <td className="px-4 py-3 text-right">
                           <p className="font-semibold text-foreground">AED {(sale.total_amount ?? 0).toFixed(2)}</p>

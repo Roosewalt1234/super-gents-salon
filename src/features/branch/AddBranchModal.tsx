@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Building2, X, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { createBranch } from "./api";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 interface AddBranchModalProps {
@@ -41,6 +42,31 @@ const AddBranchModal = ({
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [errors, setErrors] = useState<Partial<FormState>>({});
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (!open || !tenantId) return;
+    supabase
+      .from("branch_details")
+      .select("shop_number")
+      .eq("tenant_id", tenantId)
+      .then(({ data }) => {
+        const parsed = (data ?? [])
+          .map((r) => {
+            const m = (r.shop_number ?? "").match(/^([A-Za-z]*)(\d+)$/);
+            return m ? { prefix: m[1], num: parseInt(m[2], 10), width: m[2].length } : null;
+          })
+          .filter(Boolean) as { prefix: string; num: number; width: number }[];
+
+        if (parsed.length === 0) {
+          setForm((prev) => ({ ...prev, shop_number: "1" }));
+          return;
+        }
+
+        const max = parsed.reduce((a, b) => (b.num > a.num ? b : a));
+        const nextNum = String(max.num + 1).padStart(max.width, "0");
+        setForm((prev) => ({ ...prev, shop_number: `${max.prefix}${nextNum}` }));
+      });
+  }, [open, tenantId]);
 
   if (!open) return null;
 

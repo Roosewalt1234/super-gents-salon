@@ -1,6 +1,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useAddEmployeeModal } from "@/features/hr/AddEmployeeModalContext";
 import { useEditEmployeeModal } from "@/features/hr/EditEmployeeModalContext";
+import { useFaceEnrollModal } from "@/features/face-recognition/FaceEnrollModalContext";
 import { Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
@@ -12,6 +13,7 @@ import {
   UserCog,
   FileText,
   MoreVertical,
+  ScanFace,
 } from "lucide-react";
 import AppHeader from "@/components/AppHeader";
 import { Button } from "@/components/ui/button";
@@ -38,12 +40,31 @@ interface Branch {
   shop_number: string | null;
 }
 
+const cardThemes = [
+  {
+    border: "from-cyan-400 via-blue-500 to-indigo-500",
+    glow: "from-cyan-400/45 via-blue-500/35 to-indigo-500/45",
+    avatar: "from-cyan-500/20 to-blue-500/20 text-cyan-700",
+  },
+  {
+    border: "from-emerald-400 via-teal-500 to-sky-500",
+    glow: "from-emerald-400/40 via-teal-500/30 to-sky-500/40",
+    avatar: "from-emerald-500/20 to-teal-500/20 text-emerald-700",
+  },
+  {
+    border: "from-amber-400 via-orange-500 to-rose-500",
+    glow: "from-amber-400/40 via-orange-500/30 to-rose-500/40",
+    avatar: "from-amber-500/20 to-orange-500/20 text-orange-700",
+  },
+];
+
 const HRManagement = () => {
   const { user, role, profile, loading } = useAuth();
   const { openAddEmployee } = useAddEmployeeModal();
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [branchMap, setBranchMap] = useState<Map<string, string>>(new Map());
   const { openEditEmployee } = useEditEmployeeModal();
+  const { openEnroll } = useFaceEnrollModal();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [branchFilter, setBranchFilter] = useState("all");
@@ -66,7 +87,9 @@ const HRManagement = () => {
       setEmployees(empData);
       const map = new Map<string, string>();
       for (const b of branchRes.data ?? []) {
-        const label = b.shop_number ? `${b.shop_number} - ${b.branch_name}` : b.branch_name;
+        const label = b.shop_number
+          ? `${b.shop_number} - ${b.branch_name}`
+          : b.branch_name;
         map.set(b.branch_id, label);
       }
       setBranchMap(map);
@@ -109,13 +132,19 @@ const HRManagement = () => {
       .toUpperCase();
 
   return (
-    <div className="min-h-screen mesh-gradient">
+    <div className="relative min-h-screen mesh-gradient overflow-hidden">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-cyan-400/15 blur-3xl" />
+        <div className="absolute top-1/3 -right-16 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl" />
+        <div className="absolute bottom-0 left-1/3 h-80 w-80 rounded-full bg-emerald-400/10 blur-3xl" />
+      </div>
+
       <AppHeader
         title="HR Management"
         subtitle="Manage your employees and workforce"
       />
 
-      <main className="container py-8">
+      <main className="container relative z-10 py-8">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -149,7 +178,9 @@ const HRManagement = () => {
               <SelectContent>
                 <SelectItem value="all">All Branches</SelectItem>
                 {Array.from(branchMap.entries()).map(([id, name]) => (
-                  <SelectItem key={id} value={id}>{name}</SelectItem>
+                  <SelectItem key={id} value={id}>
+                    {name}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -184,8 +215,9 @@ const HRManagement = () => {
               {filtered.map((emp, i) => {
                 const isActive = (emp.status || "active").toLowerCase() === "active";
                 const branchName = emp.assigned_branch_id
-                  ? (branchMap.get(emp.assigned_branch_id) ?? "—")
-                  : "—";
+                  ? (branchMap.get(emp.assigned_branch_id) ?? "-")
+                  : "-";
+                const theme = cardThemes[i % cardThemes.length];
 
                 return (
                   <motion.div
@@ -193,126 +225,165 @@ const HRManagement = () => {
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.04, duration: 0.3 }}
-                    className="bg-card rounded-2xl shadow-sm border border-border hover:shadow-md transition-shadow"
+                    className={`group relative rounded-2xl bg-gradient-to-br p-px transition-all duration-300 hover:-translate-y-0.5 ${theme.border}`}
                   >
-                    {/* Card Header */}
-                    <div className="p-5 pb-3">
-                      <div className="flex items-start gap-3">
-                        {/* Avatar */}
-                        <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-                          <span className="text-sm font-bold text-primary">
-                            {getInitials(emp.employee_name)}
-                          </span>
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <h3 className="font-bold text-foreground text-base leading-tight truncate">
-                            {emp.employee_name}
-                          </h3>
-                          <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                            {emp.position && (
-                              <span className="text-[11px] text-muted-foreground font-medium">
-                                {emp.position}
+                    <div
+                      className={`pointer-events-none absolute -inset-1 rounded-3xl bg-gradient-to-r opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-55 ${theme.glow}`}
+                    />
+
+                    <div className="relative rounded-2xl border border-white/50 bg-card shadow-sm transition-shadow duration-300 group-hover:shadow-lg">
+                      {/* Card Header */}
+                      <div className="p-5 pb-3">
+                        <div className="flex items-start gap-3">
+                          {/* Avatar */}
+                          <div className="relative shrink-0 mt-0.5">
+                            <div
+                              className={`w-11 h-11 rounded-full bg-gradient-to-br flex items-center justify-center ${theme.avatar}`}
+                            >
+                              <span className="text-sm font-bold">
+                                {getInitials(emp.employee_name)}
                               </span>
+                            </div>
+                            {emp.face_image_url && (
+                              <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-card" title="Face enrolled" />
                             )}
-                            <span
-                              className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                                isActive
-                                  ? "bg-primary/10 text-primary"
-                                  : "bg-destructive/10 text-destructive"
-                              }`}
-                            >
-                              {isActive ? "ACTIVE" : "INACTIVE"}
-                            </span>
                           </div>
+                          <div className="min-w-0 flex-1">
+                            <h3 className="font-bold text-foreground text-base leading-tight truncate">
+                              {emp.employee_name}
+                            </h3>
+                            <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                              {emp.position && (
+                                <span className="text-[11px] text-muted-foreground font-medium">
+                                  {emp.position}
+                                </span>
+                              )}
+                              <span
+                                className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                                  isActive
+                                    ? "bg-primary/10 text-primary"
+                                    : "bg-destructive/10 text-destructive"
+                                }`}
+                              >
+                                {isActive ? "ACTIVE" : "INACTIVE"}
+                              </span>
+                            </div>
+                          </div>
+                          {/* Three-dot menu */}
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <button className="w-7 h-7 flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors shrink-0">
+                                <MoreVertical className="w-4 h-4" />
+                              </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-44">
+                              <DropdownMenuItem className="gap-2 cursor-pointer text-[13px]">
+                                View Details
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="gap-2 cursor-pointer text-[13px]"
+                                onClick={() =>
+                                  openEditEmployee(emp.employee_id, loadData)
+                                }
+                              >
+                                Edit Employee
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="gap-2 cursor-pointer text-[13px]"
+                                onClick={() =>
+                                  openEnroll(
+                                    { employeeId: emp.employee_id, employeeName: emp.employee_name },
+                                    loadData
+                                  )
+                                }
+                              >
+                                <ScanFace className="w-3.5 h-3.5" />
+                                Enroll Face
+                              </DropdownMenuItem>
+                              <DropdownMenuItem className="gap-2 cursor-pointer text-[13px] text-destructive focus:text-destructive">
+                                Archive
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </div>
-                        {/* Three-dot menu */}
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <button className="w-7 h-7 flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors shrink-0">
-                              <MoreVertical className="w-4 h-4" />
-                            </button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-40">
-                            <DropdownMenuItem className="gap-2 cursor-pointer text-[13px]">
-                              View Details
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="gap-2 cursor-pointer text-[13px]"
-                              onClick={() => openEditEmployee(emp.employee_id, loadData)}
-                            >
-                              Edit Employee
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="gap-2 cursor-pointer text-[13px] text-destructive focus:text-destructive">
-                              Archive
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
                       </div>
-                    </div>
 
-                    {/* Info rows */}
-                    <div className="px-5 pb-4 space-y-2">
-                      <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                        <Building2 className="w-4 h-4 shrink-0" />
-                        <span className="truncate">{branchName}</span>
+                      {/* Info rows */}
+                      <div className="px-5 pb-4 space-y-2">
+                        <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                          <Building2 className="w-4 h-4 shrink-0" />
+                          <span className="truncate">{branchName}</span>
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Divider */}
-                    <div className="border-t border-border mx-5" />
+                      {/* Divider */}
+                      <div className="border-t border-border mx-5" />
 
-                    {/* Stats row 1 — salary, type, nationality */}
-                    <div className="px-5 py-4 flex items-center justify-between">
-                      <div className="text-center flex-1">
-                        <p className="text-base font-bold text-primary">
-                          {emp.basic_salary != null
-                            ? `AED ${emp.basic_salary.toLocaleString()}`
-                            : "—"}
-                        </p>
-                        <p className="text-xs text-muted-foreground font-medium">Salary</p>
+                      {/* Stats row 1 - salary, type, nationality */}
+                      <div className="px-5 py-4 flex items-center justify-between">
+                        <div className="text-center flex-1">
+                          <p className="text-base font-bold text-primary">
+                            {emp.basic_salary != null
+                              ? `AED ${emp.basic_salary.toLocaleString()}`
+                              : "-"}
+                          </p>
+                          <p className="text-xs text-muted-foreground font-medium">
+                            Salary
+                          </p>
+                        </div>
+                        <div className="text-center flex-1">
+                          <p className="text-base font-bold text-foreground leading-tight">
+                            {emp.employment_type ?? "-"}
+                          </p>
+                          <p className="text-xs text-muted-foreground font-medium">
+                            Type
+                          </p>
+                        </div>
+                        <div className="text-center flex-1">
+                          <p className="text-base font-bold text-foreground">
+                            {emp.nationality ?? "-"}
+                          </p>
+                          <p className="text-xs text-muted-foreground font-medium">
+                            Nationality
+                          </p>
+                        </div>
                       </div>
-                      <div className="text-center flex-1">
-                        <p className="text-base font-bold text-foreground leading-tight">
-                          {emp.employment_type ?? "—"}
-                        </p>
-                        <p className="text-xs text-muted-foreground font-medium">Type</p>
-                      </div>
-                      <div className="text-center flex-1">
-                        <p className="text-base font-bold text-foreground">
-                          {emp.nationality ?? "—"}
-                        </p>
-                        <p className="text-xs text-muted-foreground font-medium">Nationality</p>
-                      </div>
-                    </div>
 
-                    {/* Divider */}
-                    <div className="border-t border-border mx-5" />
+                      {/* Divider */}
+                      <div className="border-t border-border mx-5" />
 
-                    {/* Stats row 2 — loan amounts */}
-                    <div className="px-5 py-4 flex items-center justify-between">
-                      <div className="text-center flex-1">
-                        <p className="text-sm font-bold text-foreground">
-                          {emp.outstanding_loan_amount != null
-                            ? `AED ${emp.outstanding_loan_amount.toLocaleString()}`
-                            : "—"}
-                        </p>
-                        <p className="text-[10px] text-muted-foreground font-medium leading-tight mt-0.5">Outstanding Loan</p>
-                      </div>
-                      <div className="text-center flex-1">
-                        <p className="text-sm font-bold text-foreground">
-                          {emp.loan_balance != null
-                            ? `AED ${emp.loan_balance.toLocaleString()}`
-                            : "—"}
-                        </p>
-                        <p className="text-[10px] text-muted-foreground font-medium leading-tight mt-0.5">Loan Balance</p>
-                      </div>
-                      <div className="text-center flex-1">
-                        <p className="text-sm font-bold text-foreground">
-                          {emp.visa_charges_bal != null
-                            ? `AED ${emp.visa_charges_bal.toLocaleString()}`
-                            : "—"}
-                        </p>
-                        <p className="text-[10px] text-muted-foreground font-medium leading-tight mt-0.5">Visa Charges</p>
+                      {/* Stats row 2 - loan amounts */}
+                      <div className="px-5 py-4 flex items-center justify-between">
+                        <div className="text-center flex-1">
+                          <p className="text-sm font-bold text-foreground">
+                            {emp.outstanding_loan_amount != null
+                              ? `AED ${emp.outstanding_loan_amount.toLocaleString()}`
+                              : "-"}
+                          </p>
+                          <p className="text-[10px] text-muted-foreground font-medium leading-tight mt-0.5">
+                            Outstanding Loan
+                          </p>
+                        </div>
+                        <div className="text-center flex-1">
+                          <p className="text-sm font-bold text-foreground">
+                            {emp.loan_balance != null
+                              ? `AED ${emp.loan_balance.toLocaleString()}`
+                              : "-"}
+                          </p>
+                          <p className="text-[10px] text-muted-foreground font-medium leading-tight mt-0.5">
+                            Loan Balance
+                          </p>
+                        </div>
+                        <div className="text-center flex-1">
+                          <p className="text-sm font-bold text-foreground">
+                            {emp.visa_charges_bal != null
+                              ? `AED ${emp.visa_charges_bal.toLocaleString()}`
+                              : "-"}
+                          </p>
+                          <p className="text-[10px] text-muted-foreground font-medium leading-tight mt-0.5">
+                            Visa Charges
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
@@ -325,7 +396,7 @@ const HRManagement = () => {
 
       <footer className="container pb-6">
         <p className="text-[10px] text-muted-foreground/60 font-mono text-center">
-          Super Salon v1.0 • Multi-Tenant Salon Management
+          Super Salon v1.0 - Multi-Tenant Salon Management
         </p>
       </footer>
     </div>
