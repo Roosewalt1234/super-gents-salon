@@ -232,7 +232,7 @@ const AttendanceManagement = () => {
               <table className="w-full text-sm">
                 <thead className="bg-muted/30">
                   <tr>
-                    {["Employee","Branch","Date","Check In","Check Out","Hours","Confidence","Status"].map((h) => (
+                    {["Employee","Branch","Date","Check In","Check Out","Hours","Confidence","Method","Status"].map((h) => (
                       <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-muted-foreground whitespace-nowrap">
                         {h}
                       </th>
@@ -242,7 +242,7 @@ const AttendanceManagement = () => {
                 <tbody>
                   {filtered.length === 0 ? (
                     <tr>
-                      <td colSpan={8} className="text-center text-muted-foreground text-xs py-12">
+                      <td colSpan={9} className="text-center text-muted-foreground text-xs py-12">
                         No attendance records found
                       </td>
                     </tr>
@@ -273,6 +273,9 @@ const AttendanceManagement = () => {
                           <td className="px-4 py-3 text-xs tabular-nums text-muted-foreground">{hours}</td>
                           <td className="px-4 py-3 text-xs tabular-nums text-muted-foreground">
                             {r.face_recognition_confidence ? `${r.face_recognition_confidence}%` : "—"}
+                          </td>
+                          <td className="px-4 py-3 text-xs text-muted-foreground whitespace-nowrap">
+                            {r.recognition_method ?? "—"}
                           </td>
                           <td className="px-4 py-3">
                             <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${

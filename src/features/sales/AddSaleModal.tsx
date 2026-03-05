@@ -216,7 +216,7 @@ const AddSaleModal = ({
             employee_id: barber.employee_id,
             date: saleDate,
             status: "present",
-            recognition_method: "Bulk Sales Entry",
+            recognition_method: "Sales Entry",
           });
 
           const { data: existingMonth } = await supabase
@@ -381,7 +381,7 @@ const AddSaleModal = ({
                             value={barber.cash_amount === 0 ? "" : String(barber.cash_amount)}
                             onChange={(e) => handleBarberField(barber.employee_id, "cash_amount", e.target.value)}
                             onKeyDown={(e) => handleCashKeyDown(e, index)}
-                            className="w-28 h-8 text-sm text-right border-emerald-200 focus:border-emerald-400"
+                            className="w-28 h-8 text-sm text-right border-emerald-200 focus:border-emerald-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           />
 
                           {/* Card */}
@@ -394,7 +394,7 @@ const AddSaleModal = ({
                             value={barber.card_amount === 0 ? "" : String(barber.card_amount)}
                             onChange={(e) => handleBarberField(barber.employee_id, "card_amount", e.target.value)}
                             onKeyDown={(e) => handleCardKeyDown(e, index)}
-                            className="w-28 h-8 text-sm text-right border-blue-200 focus:border-blue-400"
+                            className="w-28 h-8 text-sm text-right border-blue-200 focus:border-blue-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           />
 
                           {/* Total */}
