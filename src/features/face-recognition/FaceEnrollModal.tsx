@@ -104,20 +104,26 @@ const FaceEnrollModal = () => {
         throw new Error(err.detail ?? "Enrollment failed");
       }
 
-      // 2. Upload photo to Supabase Storage and update employee record
-      const fileName = `${profile.tenant_id}/${target.employeeId}.jpg`;
-      await supabase.storage
-        .from("face-images")
-        .upload(fileName, blob, { upsert: true, contentType: "image/jpeg" });
+      // 2. Upload photo to Supabase Storage and update employee record (best-effort)
+      try {
+        const fileName = `${profile.tenant_id}/${target.employeeId}.jpg`;
+        const { error: uploadError } = await supabase.storage
+          .from("face-images")
+          .upload(fileName, blob, { upsert: true, contentType: "image/jpeg" });
 
-      const { data: urlData } = supabase.storage
-        .from("face-images")
-        .getPublicUrl(fileName);
+        if (!uploadError) {
+          const { data: urlData } = supabase.storage
+            .from("face-images")
+            .getPublicUrl(fileName);
 
-      await supabase
-        .from("employees")
-        .update({ face_image_url: urlData.publicUrl })
-        .eq("employee_id", target.employeeId);
+          await supabase
+            .from("employees")
+            .update({ face_image_url: urlData.publicUrl })
+            .eq("employee_id", target.employeeId);
+        }
+      } catch {
+        // Photo upload is non-critical; face embedding already stored
+      }
 
       setStep("success");
       toast.success(`${target.employeeName} enrolled successfully`);
