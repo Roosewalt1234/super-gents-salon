@@ -179,9 +179,9 @@ async def recognize(
     # Fetch employee name
     emp = (
         db.table("employees")
-        .select("id, employee_name, profile_photo_url")
-        .eq("id", best_employee)
-        .single()
+        .select("employee_id, employee_name, profile_photo_url")
+        .eq("employee_id", best_employee)
+        .maybe_single()
         .execute()
     )
 
