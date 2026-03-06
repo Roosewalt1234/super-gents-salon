@@ -64,6 +64,17 @@ const FaceRecognition = () => {
   const [employees, setEmployees]       = useState<{ employee_id: string; employee_name: string }[]>([]);
   const [enrollId, setEnrollId]         = useState<string>("");
 
+  /* ── Load branches ── */
+  useEffect(() => {
+    if (!profile?.tenant_id) return;
+    supabase
+      .from("branch_details")
+      .select("branch_id, branch_name, shop_number")
+      .eq("tenant_id", profile.tenant_id)
+      .then(({ data }) => { if (data) setBranches(data); });
+  }, [profile?.tenant_id]);
+
+  /* ── Load employees ── */
   useEffect(() => {
     if (!profile?.tenant_id) return;
     supabase
@@ -74,32 +85,6 @@ const FaceRecognition = () => {
       .order("employee_name")
       .then(({ data }) => { if (data) setEmployees(data as any); });
   }, [profile?.tenant_id]);
-
-  /* ── Auth guards ── */
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center mesh-gradient">
-      <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-    </div>
-  );
-  if (!user) return <Navigate to="/login" replace />;
-
-  /* ── Load branches ── */
-  useEffect(() => {
-    if (!profile?.tenant_id) return;
-    supabase
-      .from("branch_details")
-      .select("branch_id, branch_name, shop_number")
-      .eq("tenant_id", profile.tenant_id)
-      .then(({ data }) => {
-        if (data) setBranches(data);
-      });
-  }, [profile?.tenant_id]);
-
-  /* ── Camera lifecycle ── */
-  useEffect(() => {
-    startCamera();
-    return () => stopCamera();
-  }, []);
 
   const startCamera = async () => {
     try {
@@ -122,6 +107,20 @@ const FaceRecognition = () => {
     streamRef.current = null;
     setCameraReady(false);
   };
+
+  /* ── Camera lifecycle ── */
+  useEffect(() => {
+    startCamera();
+    return () => stopCamera();
+  }, []);
+
+  /* ── Auth guards ── */
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center mesh-gradient">
+      <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
+  if (!user) return <Navigate to="/login" replace />;
 
   /* ── Scan ── */
   const handleScan = async () => {
