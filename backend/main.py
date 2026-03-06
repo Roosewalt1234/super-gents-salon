@@ -16,7 +16,8 @@ from PIL import Image
 from dotenv import load_dotenv
 from fastapi import FastAPI, File, Form, Request, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
+from starlette.middleware.base import BaseHTTPMiddleware
 from supabase import create_client, Client
 from deepface import DeepFace
 
@@ -34,26 +35,25 @@ db: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 # ── App ────────────────────────────────────────────────────────────────────────
 app = FastAPI(title="Super Salon Face API", version="1.0.0")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Force CORS headers on ALL responses including unhandled 500s
+class ForceCORSMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        if request.method == "OPTIONS":
+            res = Response(status_code=200)
+            res.headers["Access-Control-Allow-Origin"]  = "*"
+            res.headers["Access-Control-Allow-Methods"] = "*"
+            res.headers["Access-Control-Allow-Headers"] = "*"
+            return res
+        try:
+            response = await call_next(request)
+        except Exception as exc:
+            response = JSONResponse(status_code=500, content={"detail": str(exc)})
+        response.headers["Access-Control-Allow-Origin"]  = "*"
+        response.headers["Access-Control-Allow-Headers"] = "*"
+        return response
 
-CORS_HEADERS = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "*",
-    "Access-Control-Allow-Headers": "*",
-}
-
-@app.exception_handler(HTTPException)
-async def http_exception_handler(request: Request, exc: HTTPException):
-    return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail}, headers=CORS_HEADERS)
-
-@app.exception_handler(Exception)
-async def generic_exception_handler(request: Request, exc: Exception):
-    return JSONResponse(status_code=500, content={"detail": str(exc)}, headers=CORS_HEADERS)
+app.add_middleware(ForceCORSMiddleware)
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 MODEL_NAME   = "ArcFace"
 DETECTOR     = "opencv"          # fast; swap to "retinaface" for higher accuracy
