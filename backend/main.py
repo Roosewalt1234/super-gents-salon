@@ -128,7 +128,7 @@ async def enroll(
         .execute()
     )
 
-    if existing.data:
+    if existing and existing.data:
         db.table("face_descriptors").update(payload).eq("employee_id", employee_id).execute()
     else:
         db.table("face_descriptors").insert(payload).execute()
