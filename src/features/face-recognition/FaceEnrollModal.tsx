@@ -149,14 +149,14 @@ const FaceEnrollModal = () => {
         <div className="space-y-4">
 
           {/* Video / captured frame */}
-          <div className="relative rounded-xl overflow-hidden bg-black aspect-[4/3]">
+          <div className="relative rounded-xl overflow-hidden bg-black aspect-square">
             {step === "preview" && (
               <video
                 ref={videoRef}
                 autoPlay
                 muted
                 playsInline
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover [transform:scaleX(-1)]"
               />
             )}
             {(step === "captured" || step === "enrolling") && captureUrl && (
@@ -178,7 +178,7 @@ const FaceEnrollModal = () => {
             {/* Face guide overlay */}
             {step === "preview" && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-48 h-60 rounded-full border-2 border-primary/60 border-dashed" />
+                <div className="w-72 h-[22rem] rounded-full border-2 border-primary/60 border-dashed" />
               </div>
             )}
           </div>

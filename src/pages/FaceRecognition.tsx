@@ -21,7 +21,9 @@ import {
   Clock,
   MapPin,
   RefreshCw,
+  UserPlus,
 } from "lucide-react";
+import { useFaceEnrollModal } from "@/features/face-recognition/FaceEnrollModalContext";
 
 const FACE_API_URL = import.meta.env.VITE_FACE_API_URL ?? "http://localhost:8000";
 
@@ -51,11 +53,27 @@ const FaceRecognition = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
+  const { openEnroll } = useFaceEnrollModal();
+
   const [branches, setBranches]         = useState<Branch[]>([]);
   const [branchId, setBranchId]         = useState<string>("");
   const [scanState, setScanState]       = useState<ScanState>("idle");
   const [result, setResult]             = useState<RecognitionResult | null>(null);
   const [cameraReady, setCameraReady]   = useState(false);
+
+  const [employees, setEmployees]       = useState<{ employee_id: string; employee_name: string }[]>([]);
+  const [enrollId, setEnrollId]         = useState<string>("");
+
+  useEffect(() => {
+    if (!profile?.tenant_id) return;
+    supabase
+      .from("employees")
+      .select("employee_id, employee_name")
+      .eq("tenant_id", profile.tenant_id)
+      .eq("status", "active")
+      .order("employee_name")
+      .then(({ data }) => { if (data) setEmployees(data as any); });
+  }, [profile?.tenant_id]);
 
   /* ── Auth guards ── */
   if (loading) return (
@@ -91,7 +109,8 @@ const FaceRecognition = () => {
       streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.onloadedmetadata = () => setCameraReady(true);
+        await videoRef.current.play().catch(() => {});
+        setCameraReady(true);
       }
     } catch {
       toast.error("Cannot access webcam — please allow camera permissions.");
@@ -228,6 +247,39 @@ const FaceRecognition = () => {
           </Select>
         </div>
 
+        {/* Enroll employee */}
+        <div className="bg-card rounded-2xl border border-border p-5 shadow-sm">
+          <div className="flex items-center gap-2.5 mb-4">
+            <UserPlus className="w-4 h-4 text-primary" />
+            <h3 className="text-sm font-bold">Enroll Employee Face</h3>
+          </div>
+          <div className="flex gap-3">
+            <Select value={enrollId} onValueChange={setEnrollId}>
+              <SelectTrigger className="flex-1">
+                <SelectValue placeholder="Select employee to enroll…" />
+              </SelectTrigger>
+              <SelectContent>
+                {employees.map((e) => (
+                  <SelectItem key={e.employee_id} value={e.employee_id}>
+                    {e.employee_name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button
+              disabled={!enrollId}
+              onClick={() => {
+                const emp = employees.find((e) => e.employee_id === enrollId);
+                if (!emp) return;
+                openEnroll({ employeeId: emp.employee_id, employeeName: emp.employee_name });
+              }}
+              className="gap-2 teal-gradient text-primary-foreground shadow-md shrink-0"
+            >
+              <UserPlus className="w-4 h-4" /> Enroll
+            </Button>
+          </div>
+        </div>
+
         {/* Camera + scan */}
         <div className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-border flex items-center gap-2.5">
@@ -236,21 +288,21 @@ const FaceRecognition = () => {
           </div>
 
           {/* Webcam */}
-          <div className="relative bg-black aspect-[4/3]">
+          <div className="relative bg-black aspect-square">
             <video
               ref={videoRef}
               autoPlay
               muted
               playsInline
-              className={`w-full h-full object-cover transition-opacity ${
+              className={`w-full h-full object-cover transition-opacity [transform:scaleX(-1)] ${
                 scanState === "result" ? "opacity-20" : "opacity-100"
               }`}
             />
 
             {/* Face guide ellipse */}
-            {scanState === "idle" && (
+            {scanState !== "result" && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-52 h-64 rounded-full border-2 border-primary/50 border-dashed" />
+                <div className="w-72 h-[22rem] rounded-full border-2 border-primary/50 border-dashed" />
               </div>
             )}
 
