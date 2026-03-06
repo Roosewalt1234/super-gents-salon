@@ -117,7 +117,7 @@ const FaceEnrollModal = () => {
       await supabase
         .from("employees")
         .update({ face_image_url: urlData.publicUrl })
-        .eq("id", target.employeeId);
+        .eq("employee_id", target.employeeId);
 
       setStep("success");
       toast.success(`${target.employeeName} enrolled successfully`);
