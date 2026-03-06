@@ -16,16 +16,16 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Pre-download ArcFace model so it's baked into the image (avoids slow cold starts)
+# Pre-download ArcFace + RetinaFace models so they're baked into the image (avoids slow cold starts)
 RUN python - <<'EOF'
 import numpy as np
 from deepface import DeepFace
 dummy = np.zeros((224, 224, 3), dtype=np.uint8)
 try:
-    DeepFace.represent(dummy, model_name="ArcFace", detector_backend="opencv", enforce_detection=False)
+    DeepFace.represent(dummy, model_name="ArcFace", detector_backend="retinaface", enforce_detection=False)
 except Exception:
     pass
-print("ArcFace model cached.")
+print("ArcFace + RetinaFace models cached.")
 EOF
 
 EXPOSE 8000

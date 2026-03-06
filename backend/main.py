@@ -56,7 +56,7 @@ app.add_middleware(ForceCORSMiddleware)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 MODEL_NAME   = "ArcFace"
-DETECTOR     = "opencv"          # fast; swap to "retinaface" for higher accuracy
+DETECTOR     = "retinaface"      # more accurate than opencv
 THRESHOLD    = 0.40              # cosine distance — lower = stricter
 
 
@@ -78,7 +78,7 @@ def get_embedding(img: Image.Image) -> list[float]:
         img_path=arr,
         model_name=MODEL_NAME,
         detector_backend=DETECTOR,
-        enforce_detection=True,
+        enforce_detection=False,
     )
     return result[0]["embedding"]   # list of 512 floats
 
