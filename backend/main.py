@@ -55,9 +55,10 @@ class ForceCORSMiddleware(BaseHTTPMiddleware):
 app.add_middleware(ForceCORSMiddleware)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
-MODEL_NAME   = "ArcFace"
-DETECTOR     = "retinaface"      # more accurate than opencv
-THRESHOLD    = 0.40              # cosine distance — lower = stricter
+MODEL_NAME        = "ArcFace"
+ENROLL_DETECTOR   = "retinaface"   # accurate — used at enrollment time
+RECOGNIZE_DETECTOR = "opencv"      # fast — used at scan/recognition time
+THRESHOLD         = 0.40           # cosine distance — lower = stricter
 
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
@@ -70,14 +71,13 @@ def bytes_to_pil(raw: bytes) -> Image.Image:
     return Image.open(io.BytesIO(raw)).convert("RGB")
 
 
-def get_embedding(img: Image.Image) -> list[float]:
+def get_embedding(img: Image.Image, detector: str) -> list[float]:
     """Run DeepFace ArcFace and return the 512-dim embedding."""
-    # DeepFace accepts PIL images or numpy arrays
     arr = np.array(img)
     result = DeepFace.represent(
         img_path=arr,
         model_name=MODEL_NAME,
-        detector_backend=DETECTOR,
+        detector_backend=detector,
         enforce_detection=False,
     )
     return result[0]["embedding"]   # list of 512 floats
@@ -108,7 +108,7 @@ async def enroll(
     raw = upload_to_bytes(image)
     try:
         pil = bytes_to_pil(raw)
-        embedding = get_embedding(pil)
+        embedding = get_embedding(pil, ENROLL_DETECTOR)
     except Exception as exc:
         raise HTTPException(status_code=422, detail=f"Face detection failed: {exc}")
 
@@ -148,7 +148,7 @@ async def recognize(
     raw = upload_to_bytes(image)
     try:
         pil = bytes_to_pil(raw)
-        query_embedding = get_embedding(pil)
+        query_embedding = get_embedding(pil, RECOGNIZE_DETECTOR)
     except Exception as exc:
         raise HTTPException(status_code=422, detail=f"Face detection failed: {exc}")
 
